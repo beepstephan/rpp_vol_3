@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Деталі велосипеда</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .details, .history {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .history h2 {
+            margin-top: 20px;
+        }
+        .history ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .history ul li {
+            background: #f9f9f9;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .history ul li:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Детальна інформація велосипеда "{{ bike.model }}"</h1>
+
+<div class="details">
+    <h2>{{ bike.model }}</h2>
+    <p>Стан: {{ bike.get_status_display }}</p>
+    <p>Станція: {% if bike.station %}{{ bike.station.name }}{% else %}Не прив'язаний до станції{% endif %}</p>
+    <p>Кількість використань: {{ bike.total_usage }}</p>
+</div>
+
+<div class="history">
+    <h2>Історія оренди</h2>
+    {% if rentals %}
+        <ul>
+            {% for rental in rentals %}
+                <li>
+                    <strong>Користувач:</strong> {{ rental.user_name }}<br>
+                    <strong>Початок оренди:</strong> {{ rental.start_time }}<br>
+                    <strong>Кінець оренди:</strong> {{ rental.end_time }}<br>
+                    <strong>Загальна вартість:</strong> {{ rental.total_cost }} грн
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Цей велосипед ще не був в оренді.</p>
+    {% endif %}
+</div>
+
+<a href="{% url 'bike_list' %}">Повернутись до списку велосипедів</a>
+
+</body>
+</html>

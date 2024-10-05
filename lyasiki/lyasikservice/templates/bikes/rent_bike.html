@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Орендувати велосипед</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-bottom: 10px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .success-message {
+            text-align: center;
+            background-color: #d4edda;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    {% if rental %}
+        <div class="success-message">
+            <p>Велосипед {{ rental.bike.model }} успішно орендовано користувачем {{ rental.user_name }}!</p>
+            <p>Час оренди: {{ rental.start_time }}</p>
+        </div>
+        <a href="{% url 'bike_list' %}">Сплатити та повернутись до списку велосипедів</a>
+    {% else %}
+        <h1>Орендувати велосипед: {{ bike.model }}</h1>
+        <form method="post">
+            {% csrf_token %}
+            <label for="user_name">Ваше ім'я:</label>
+            <input type="text" id="user_name" name="user_name" required>
+            <button type="submit">Орендувати</button>
+        </form>
+    {% endif %}
+</div>
+</body>
+</html>

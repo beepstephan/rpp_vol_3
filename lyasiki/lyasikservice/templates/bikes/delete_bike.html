@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Видалити велосипед</title>
+</head>
+<body>
+
+<h1>Видалити велосипед: {{ bike.model }}</h1>
+<p>Ви впевнені, що хочете видалити цей велосипед?</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" name="confirm">Так, видалити</button>
+    <a href="{% url 'bike_list' %}">Скасувати</a>
+</form>
+
+</body>
+</html>

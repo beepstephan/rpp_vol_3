@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список велосипедів</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .bike-list {
+            margin: 0 auto;
+            max-width: 800px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .bike {
+            padding: 15px;
+            border-bottom: 1px solid #ccc;
+        }
+        .bike:last-child {
+            border-bottom: none;
+        }
+        .bike h2 {
+            margin: 0 0 10px;
+        }
+        .bike p {
+            margin: 5px 0;
+        }
+        .btn-return {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 20px;
+            margin: 5px;
+            max-width: 300px;
+            background-color: #f0f0f0;
+            color: #333;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: none;
+        }
+        .btn-return-container { /* Добавте новий контейнер */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+        .btn-return:hover {
+            background-color: #e0e0f0;
+            transform: translateY(-1px);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <h1>Список велосипедів</h1>
+
+    <a href="{% url 'add_bike' %}" class="btn btn-success mb-3">Додати новий велосипед</a>
+
+    <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>Назва</th>
+                <th>Станція</th>
+                <th>Статус</th>
+                <th>Дії</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for bike in bikes %}
+                <tr>
+                    <td>{{ bike.id }}</td>
+                    <td>{{ bike.model }}</td>
+                    <td>{{ bike.station }}</td>
+                    <td>
+                        {% if bike.status == 'available' %}
+                            <span class="badge bg-success">Доступний</span>
+                        {% elif bike.status == 'in_use' %}
+                            <span class="badge bg-danger">В оренді</span>
+                        {% elif bike.status == 'maintenance' %}
+                            <span class="badge bg-warning">На обслуговуванні</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'bike_details' bike.id %}" class="btn btn-info btn-sm">Деталі</a>
+                        {% if bike.status == 'available' %}
+                            <a href="{% url 'rent_bike' bike.id %}" class="btn btn-primary btn-sm">Орендувати</a>
+                        {% elif bike.status == 'in_use' %}
+                            <a href="{% url 'return_bike' bike.id %}" class="btn btn-secondary btn-sm">Повернути</a>
+                        {% endif %}
+                        <a href="{% url 'bike_edit' bike.id %}" class="btn btn-warning btn-sm">Редагувати</a>
+                        <form action="{% url 'delete_bike' bike.id %}" method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Ви впевнені, що хочете видалити цей велосипед?');">Видалити</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="btn-return-container">
+        <a href="{% url 'home' %}" class="btn-return">Повернутись на головну</a>
+    </div>
+
+</body>
+</html>

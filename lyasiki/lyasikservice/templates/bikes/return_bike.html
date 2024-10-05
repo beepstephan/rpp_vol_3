@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Повернення велосипеда</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        p {
+            font-size: 16px;
+            color: #555;
+        }
+        .cost {
+            font-size: 18px;
+            font-weight: bold;
+            color: #007bff;
+        }
+        .button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            text-align: center;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        .button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Повернення велосипеда</h1>
+
+    <p>Ви повертаєте велосипед: <strong>{{ rental.bike.model }}</strong></p>
+    <p>Час початку оренди: <strong>{{ rental.start_time }}</strong></p>
+
+    {% if rental.end_time %}
+        <p>Час закінчення оренди: <strong>{{ rental.end_time }}</strong></p>
+        <p class="cost">Загальна вартість: <strong>{{ rental.total_cost }} грн</strong></p>
+    {% else %}
+        <p>Оренда ще не завершена. Поверніть велосипед, щоб розрахувати вартість.</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="button">Повернути велосипед</button>
+        </form>
+    {% endif %}
+
+    <a href="{% url 'bike_list' %}" class="button" style="background-color: #007bff;">Повернутись до списку велосипедів</a>
+</div>
+
+</body>
+</html>
