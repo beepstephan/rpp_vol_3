@@ -1,9 +1,7 @@
 from pathlib import Path
 import os
-from dotenv import load_dotenv
 
-load_dotenv()
-SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
+SECRET_KEY = 'django-insecure-v*#@_**ie@mpm)3bj$g6tgzf0f36mc0qp5n=y+wxgrws9eaw=7'
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
